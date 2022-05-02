@@ -22,7 +22,7 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await access(tsconfigPath);
 
         const tsconfig = require(tsconfigPath);
-        const outDir = tsconfig.compilerOptions.outDir ? tsconfig.compilerOptions.outDir : directory;
+        const outDir = tsconfig.compilerOptions.outDir ? tsconfig.compilerOptions.outDir : "";
         // Install tsc
         core.info('Installing tsc');
         await exec('npm i --g typescript');
