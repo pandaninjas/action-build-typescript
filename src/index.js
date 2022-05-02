@@ -60,8 +60,8 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         // Copy compiled files and package* files
         core.info('Copying compiled files and package* files');
         await io.cp(join(directory, outDir), `branch-${branchName}`, { recursive: true });
-        await io.cp(join(directory, 'package.json'), `branch-${branchName}`);
-        await io.cp(join(directory, 'package-lock.json'), `branch-${branchName}`);
+        await io.cp(join(directory, 'package.json'), `branch-${branchName}`).catch(_err => { }); //if the files are not present, all good!
+        await io.cp(join(directory, 'package-lock.json'), `branch-${branchName}`).catch(_err => { }); //same here
 
         // Commit files
         core.info('Adding and commiting files');
