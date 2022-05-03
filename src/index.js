@@ -62,7 +62,8 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await io.cp(join(directory, outDir), `branch-${branchName}`, { recursive: true });
         await io.cp(join(directory, 'package.json'), `branch-${branchName}`).catch(_err => { }); //if the files are not present, all good!
         await io.cp(join(directory, 'package-lock.json'), `branch-${branchName}`).catch(_err => { }); //same here
-
+        await exec("pwd");
+        await exec('git status');
         // Commit files
         core.info('Adding and commiting files');
         await exec(`git add ."`, [], { cwd: `branch-${branchName}` });
