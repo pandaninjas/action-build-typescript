@@ -39,7 +39,6 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
 
         const octokit = github.getOctokit(githubToken);
 
-        const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
         const branches = await octokit.repos.listBranches({
             owner,
             repo
