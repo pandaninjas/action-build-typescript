@@ -65,6 +65,7 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await exec("pwd");
         await exec('git status');
         await exec('ls -lah');
+        await exec('ls -lah ..');
         // Commit files
         core.info('Adding and commiting files');
         await exec(`git add ."`, [], { cwd: `branch-${branchName}` });
