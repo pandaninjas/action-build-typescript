@@ -68,13 +68,13 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await exec('ls -lah ..', [], { cwd:  `branch-${branchName}/${repo}`});
         // Commit files
         core.info('Adding and commiting files');
-        await exec(`git add ."`, [], { cwd: `branch-${branchName}` });
+        await exec(`git add ."`, [], { cwd: `branch-${branchName}/${repo}` });
         // We use the catch here because sometimes the code itself may not have changed
         await exec(`git commit -m "build: ${github.context.sha}"`, [], { cwd: `branch-${branchName}/${repo}` }).catch(_err => core.warning("Couldn't commit new changes because there aren't any"));
 
         // Push files
         core.info('Pushing new changes');
-        await exec(`git push origin HEAD:${branchName}`, [], { cwd: `branch-${branchName}` });
+        await exec(`git push origin HEAD:${branchName}`, [], { cwd: `branch-${branchName}/${repo}` });
 
         process.exit(0);
     } catch (error) {
