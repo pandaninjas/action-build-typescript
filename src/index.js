@@ -22,7 +22,7 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await access(tsconfigPath);
 
         const tsconfig = require(tsconfigPath);
-        const outDir = tsconfig.compilerOptions.outDir ? tsconfig.compilerOptions.outDir : "";
+        const outDir = tsconfig.compilerOptions.outDir ? tsconfig.compilerOptions.outDir : ${repo};
         // Install tsc
         core.info('Installing tsc');
         await exec('npm i --g typescript');
@@ -62,19 +62,19 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await io.cp(join(directory, outDir), `branch-${branchName}`, { recursive: true });
         await io.cp(join(directory, 'package.json'), `branch-${branchName}`).catch(_err => { }); //if the files are not present, all good!
         await io.cp(join(directory, 'package-lock.json'), `branch-${branchName}`).catch(_err => { }); //same here
-        await exec("pwd", [], { cwd:  `branch-${branchName}`});
-        await exec('git status', [], { cwd:  `branch-${branchName}`});
-        await exec('ls -lah', [], { cwd:  `branch-${branchName}/${repo}`});
-        await exec('ls -lah ..', [], { cwd:  `branch-${branchName}/${repo}`});
+//         await exec("pwd", [], { cwd:  `branch-${branchName}`});
+//         await exec('git status', [], { cwd:  `branch-${branchName}`});
+//         await exec('ls -lah', [], { cwd:  `branch-${branchName}}`});
+//         await exec('ls -lah ..', [], { cwd:  `branch-${branchName}/${repo}`});
         // Commit files
         core.info('Adding and commiting files');
-        await exec(`git add ."`, [], { cwd: `branch-${branchName}/${repo}` });
+        await exec(`git add ."`, [], { cwd: `branch-${branchName}` });
         // We use the catch here because sometimes the code itself may not have changed
-        await exec(`git commit -m "build: ${github.context.sha}"`, [], { cwd: `branch-${branchName}/${repo}` }).catch(_err => core.warning("Couldn't commit new changes because there aren't any"));
+        await exec(`git commit -m "build: ${github.context.sha}"`, [], { cwd: `branch-${branchName}` }).catch(_err => core.warning("Couldn't commit new changes because there aren't any"));
 
         // Push files
         core.info('Pushing new changes');
-        await exec(`git push origin HEAD:${branchName}`, [], { cwd: `branch-${branchName}/${repo}` });
+        await exec(`git push origin HEAD:${branchName}`, [], { cwd: `branch-${branchName}` });
 
         process.exit(0);
     } catch (error) {
