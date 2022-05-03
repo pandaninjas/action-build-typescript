@@ -20,7 +20,7 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
 
     try {
         await access(tsconfigPath);
-
+        const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
         const tsconfig = require(tsconfigPath);
         const outDir = tsconfig.compilerOptions.outDir ? tsconfig.compilerOptions.outDir : repo;
         // Install tsc
