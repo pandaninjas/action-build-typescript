@@ -52,8 +52,8 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await exec(`git config --global user.email action@github.com`);
 
         core.info('Cloning branch')
-//         const clone = await exec(`git clone https://${github.context.actor}:${githubToken}@github.com/${owner}/${repo}.git branch-${branchName}`);
-//         if (clone !== 0) return exit('Something went wrong while cloning the repository.');
+        const clone = await exec(`git clone https://${github.context.actor}:${githubToken}@github.com/${owner}/${repo}.git branch-${branchName}`);
+        if (clone !== 0) return exit('Something went wrong while cloning the repository.');
         // Check out to branch
         await exec(`${branchExists ? `git checkout ${branchName}` : `git checkout --orphan ${branchName}`}`, [], { cwd: `branch-${branchName}` });
 
@@ -64,6 +64,7 @@ if (pushToBranch == true && !githubToken) return exit('A GitHub secret token is 
         await io.cp(join(directory, 'package-lock.json'), `branch-${branchName}`).catch(_err => { }); //same here
         await exec("pwd");
         await exec('git status');
+        await exec('ls -lah');
         // Commit files
         core.info('Adding and commiting files');
         await exec(`git add ."`, [], { cwd: `branch-${branchName}` });
